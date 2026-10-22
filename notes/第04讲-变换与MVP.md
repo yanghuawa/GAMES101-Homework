@@ -367,7 +367,7 @@ Eigen::Vector4f p = P * Eigen::Vector4f(0, 2, -7, 1);
 std::cout << p.transpose() << " -> " << (p / p.w()).transpose() << std::endl;
 ```
 
-对 \((0,2,-7,1)\)，期望 \(y_{ndc}=0.6897\)，\(z_{ndc}\approx0.974\)。
+对 \((0,2,-7,1)\)，期望 \(y_{ndc}=0.6897\)，\(z_{ndc}\approx0.975\)。
 
 ---
 
