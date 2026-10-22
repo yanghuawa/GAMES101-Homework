@@ -17,5 +17,6 @@ compile_commands.json
 _ref/
 
 # 编辑器
-.vscode/
+.vscode/*
+!.vscode/c_cpp_properties.json
 *.user
