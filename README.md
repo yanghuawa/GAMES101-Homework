@@ -39,14 +39,16 @@ games101/
 ## 构建 / 运行
 
 ```bat
-build.cmd hw0
-run.cmd hw0
+.\build.cmd hw0
+.\run.cmd hw0
 
-build.cmd hw1
-run.cmd hw1 -r 0  hw1_0.png
-run.cmd hw1 -r 45 hw1_45.png
-run.cmd hw1 -r 90 hw1_90.png
+.\build.cmd hw1
+.\run.cmd hw1 -r 0  hw1_0.png
+.\run.cmd hw1 -r 45 hw1_45.png
+.\run.cmd hw1 -r 90 hw1_90.png
 ```
+
+> PowerShell 里当前目录的程序要加 `.\`；cmd.exe 里可以省略。终端要先在 `C:\Users\siqi\Desktop\games101` 下。
 
 `run.cmd` 会先 `cd` 到 `hw\hwN` 再启动，所以生成的 png 就在作业目录里。
 

@@ -7,7 +7,7 @@
 在 `sandbox` 目录下：
 
 ```bat
-run.cmd
+.\run.cmd
 ```
 
 它会用 g++ 编译 `eigen_basics.cpp` 并运行。
