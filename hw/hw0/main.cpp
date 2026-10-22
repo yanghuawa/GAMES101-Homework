@@ -19,9 +19,19 @@ int main()
 
     // TODO 1: 绕 Z 轴逆时针旋转 theta
     Eigen::Matrix3f R = Eigen::Matrix3f::Identity();
+    float c = cos(theta);
+    float s = sin(theta);
+    R << c,-s,0,
+         s, c,0,
+         0, 0,1;
+    
+
 
     // TODO 2: 平移 (1, 2)
     Eigen::Matrix3f T = Eigen::Matrix3f::Identity();
+    T << 1,0,1,
+         0,1,2,
+         0,0,1;
 
     // 组合顺序已经给出：先旋转、后平移 → M = T * R
     Eigen::Matrix3f M = T * R;
