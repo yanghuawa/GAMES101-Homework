@@ -170,6 +170,25 @@ V=R_{view}\cdot T(-\text{eye})
 
 作业 1 的相机正好看向 \(-z\)，所以 \(R_{view}=I\)，只剩平移。
 
+### `up` 和 `u` 不是一回事
+
+- `up` 是**输入的方向提示**（比如世界坐标的 \((0,1,0)\)），不要求和 \(\mathbf f\) 垂直。
+- `u` 是**相机真正的上方向**，由 \(\mathbf s\times\mathbf f\) 算出来，必然和 \(\mathbf f\)、\(\mathbf s\) 都垂直，三者构成正交基。
+
+一般 \(\mathbf u\ne\text{up}\)。关系是：把 `up` 中沿 \(\mathbf f\) 的分量去掉，再归一化：
+
+\[
+\mathbf u=
+\frac{\text{up}-(\text{up}\cdot\mathbf f)\mathbf f}
+{\|\text{up}-(\text{up}\cdot\mathbf f)\mathbf f\|}
+\]
+
+这等价于 \(\mathbf s\times\mathbf f\)（\(\mathbf s\) 已归一化时）。
+
+只有当 `up` 已经垂直于 \(\mathbf f\) 且已归一化时，才有 \(\mathbf u=\text{up}\)。作业 1 正好是这种情况：\(\mathbf f=(0,0,-1)\)，\(\text{up}=(0,1,0)\)，点乘为 0，所以 \(\mathbf s=(1,0,0)\)、\(\mathbf u=(0,1,0)=\text{up}\)。
+
+如果 `up` 和 \(\mathbf f\) 平行，叉乘为 0，look-at 退化，需要换一个不平行于 \(\mathbf f\) 的 `up`。
+
 ---
 
 ## 4. 正交投影
