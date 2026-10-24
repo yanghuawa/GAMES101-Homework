@@ -19,8 +19,8 @@ int main()
 
     // TODO 1: 绕 Z 轴逆时针旋转 theta
     Eigen::Matrix3f R = Eigen::Matrix3f::Identity();
-    float c = cos(theta);
-    float s = sin(theta);
+    float c = std::cos(theta);
+    float s = std::sin(theta);
     R << c,-s,0,
          s, c,0,
          0, 0,1;
