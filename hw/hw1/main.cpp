@@ -4,8 +4,8 @@
 #include <iostream>
 #include <opencv2/opencv.hpp>
 
-// 作业 1（基础）：实现 get_model_matrix 与 get_projection_matrix。
-// 提高题（绕任意轴旋转）等基础题渲染正确后再加。
+// 作业 1：基础题 get_model_matrix / get_projection_matrix，
+// 提高题 get_rotation（Rodrigues 任意轴旋转）。
 
 constexpr double MY_PI = 3.1415926;
 
@@ -37,6 +37,30 @@ Eigen::Matrix4f get_model_matrix(float rotation_angle)
              0,0,1,0,
              0,0,0,1;
 
+    return model;
+}
+
+// 提高题：绕任意轴 axis 旋转 rotation_angle 度（Rodrigues 公式）
+Eigen::Matrix4f get_rotation(Eigen::Vector3f axis, float rotation_angle)
+{
+    Eigen::Vector3f n = axis.normalized();
+    float rad = rotation_angle / 180.0f * (float)MY_PI;
+    float c = std::cos(rad);
+    float s = std::sin(rad);
+
+    // [n]_×
+    Eigen::Matrix3f skew;
+    skew << 0,      -n.z(),  n.y(),
+            n.z(),   0,     -n.x(),
+           -n.y(),   n.x(),  0;
+
+    // R = cosθ I + (1-cosθ) nn^T + sinθ [n]_×
+    Eigen::Matrix3f R = c * Eigen::Matrix3f::Identity()
+                      + (1.0f - c) * n * n.transpose()
+                      + s * skew;
+
+    Eigen::Matrix4f model = Eigen::Matrix4f::Identity();
+    model.block<3, 3>(0, 0) = R;
     return model;
 }
 
@@ -86,6 +110,7 @@ int main(int argc, const char** argv)
     rst::rasterizer r(700, 700);
 
     Eigen::Vector3f eye_pos = {0, 0, 5};
+    Eigen::Vector3f axis(1, 1, 0); // 提高题的旋转轴
 
     std::vector<Eigen::Vector3f> pos{{2, 0, -2}, {0, 2, -2}, {-2, 0, -2}};
 
@@ -100,7 +125,7 @@ int main(int argc, const char** argv)
     if (command_line) {
         r.clear(rst::Buffers::Color | rst::Buffers::Depth);
 
-        r.set_model(get_model_matrix(angle));
+        r.set_model(get_rotation(axis, angle));
         r.set_view(get_view_matrix(eye_pos));
         r.set_projection(get_projection_matrix(45, 1, 0.1, 50));
 
@@ -116,7 +141,7 @@ int main(int argc, const char** argv)
     while (key != 27) {
         r.clear(rst::Buffers::Color | rst::Buffers::Depth);
 
-        r.set_model(get_model_matrix(angle));
+        r.set_model(get_rotation(axis, angle));
         r.set_view(get_view_matrix(eye_pos));
         r.set_projection(get_projection_matrix(45, 1, 0.1, 50));
 
