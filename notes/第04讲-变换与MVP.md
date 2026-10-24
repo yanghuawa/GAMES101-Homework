@@ -236,6 +236,47 @@ T=
 t=n\tan\frac{\text{fov}}{2},\qquad r=t\cdot\text{aspect},\qquad l=-r,\qquad b=-t
 \]
 
+![视锥侧视图与近平面矩形](figures/frustum_near_plane.png)
+
+这些量都是在描述**近平面上的那个矩形**，不是相机的参数：
+
+| 符号 | 名字 | 含义 |
+| --- | --- | --- |
+| \(n\) | near | 相机到近平面的距离（正数） |
+| \(f\) | far | 相机到远平面的距离（正数） |
+| `fov` | 垂直视场角 | 上下两条视线的夹角 |
+| `aspect` | 宽高比 | 近平面矩形的宽 / 高 |
+| \(t\) | top | 近平面矩形上边界的 \(y\) 坐标 |
+| \(b\) | bottom | 下边界，\(b=-t\) |
+| \(r\) | right | 右边界 \(x\) 坐标 |
+| \(l\) | left | 左边界，\(l=-r\) |
+
+为什么 \(t=n\tan(\text{fov}/2)\)：从侧面看，相机 \(O\)、近平面中心、近平面顶端构成一个直角三角形。斜边是上视线，邻边是 \(n\)，对边是 \(t\)，\(O\) 处的角是 \(\text{fov}/2\)，所以
+
+\[
+\tan\frac{\text{fov}}{2}=\frac{t}{n}
+\quad\Longrightarrow\quad
+t=n\tan\frac{\text{fov}}{2}
+\]
+
+为什么 \(r=t\cdot\text{aspect}\)：矩形的宽高比
+
+\[
+\text{aspect}=\frac{2r}{2t}=\frac{r}{t}
+\quad\Longrightarrow\quad
+r=t\cdot\text{aspect}
+\]
+
+例：`fov = 45°`、`n = 0.1`、`aspect = 1`：
+
+\[
+\text{fov}/2=22.5^\circ,\quad
+\tan22.5^\circ\approx0.4142,\quad
+t=0.1\times0.4142=0.04142
+\]
+
+所以 \(t=r=0.04142\)，\(l=b=-0.04142\)。近平面只有 \(0.0828\times0.0828\) 大，但投影矩阵会把它拉伸到 NDC 的 \([-1,1]^2\)。
+
 ### 5.2 相似三角形
 
 在深度 \(z\)（\(z<0\)）处，可见的 \(x\) 范围是近平面的一半宽度按 \((-z)/n\) 放大：
